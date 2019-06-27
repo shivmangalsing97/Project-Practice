@@ -3,36 +3,42 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 
-app.get('/api', (req,res)=>{
-    res.json({
-        message : 'welcome to JWT'
-    })
-});
-
-app.post('/api/posts', verifyToken ,(req,res)=>{
-    jwt.verify(req.token, 'iamasecretkey' , (err, authData)=>{
-        if(err){
+app.get('/api',verifyToken, (req, res) => {
+    jwt.verify(req.token, 'iamasecretkey', (err, authData) => {
+        if (err) {
             res.sendStatus(403);
         } else {
             res.json({
-                message : '......post created',
-                authData
+                message: 'welcome to JWT'
+            });
+        }
+    });
+});
+
+app.post('/api/posts', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'iamasecretkey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            res.json({
+                message: '......post created',
+                authData :authData
             });
         }
     })
-    
+
 });
 
-app.post('/api/login', (req,res)=>{
+app.post('/api/login', (req, res) => {
     //Mock User
     const user = {
-        id : 1,
-        username : 'shiv',
-        email : 'shiv@gmail.com'
+        id: 1,
+        username: 'shiv',
+        email: 'shiv@gmail.com'
     }
-    jwt.sign({user},'iamasecretkey',{expiresIn : '30s'} ,(err, token)=>{
+    jwt.sign({ user : user  }, 'iamasecretkey', { expiresIn: '30s' }, (err, token) => {
         res.json({
-            token 
+            token : token
         })
     });
 
@@ -42,11 +48,11 @@ app.post('/api/login', (req,res)=>{
 // Authorization : Bearer <access_token>
 
 //Verify token function 
-function verifyToken(req,res,next){
+function verifyToken(req, res, next) {
     //Get Auth Header Value
-    const bearerHeader = req.headers['authorization'] ; 
+    const bearerHeader = req.headers['authorization'];
     //check if bearer is not define
-    if(typeof bearerHeader !== 'undefined'){
+    if (typeof bearerHeader !== 'undefined') {
         // Split at the space   
         const bearer = bearerHeader.split(' ');
         // Get token from array
@@ -61,6 +67,6 @@ function verifyToken(req,res,next){
     }
 }
 
-app.listen(4000, ()=>{
+app.listen(4000, () => {
     console.log('server satarted on 4000')
 })
