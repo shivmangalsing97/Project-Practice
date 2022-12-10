@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/shivmangalsing97/Project-Practice#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.7",
     "node": "^12.4.0"
